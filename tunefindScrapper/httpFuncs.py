@@ -1,6 +1,6 @@
 import requests
 
-baseURL = 'tunefind.com'
+baseURL = 'https://tunefind.com'
 
 def ParseName(name):
     return name.lower().replace(' ', '-')

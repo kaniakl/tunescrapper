@@ -36,24 +36,39 @@ def ScrapSeasonIndexes(seriesName, season):
     url = SeasonEpisQueryUrl(seriesName, season)
     pattern = SeasonEpisQueryUrlPattern(seriesName, season)
     content = RequestHandler(url)
-    soup = BeautifulSoup(content)
+    soup = BeautifulSoup(content, features="html5lib")
+    pattern = pattern + '/'
+    indexes = []
     for link in soup.find_all('a', {'href': re.compile(pattern)}):
-        print(link)
+        href = link.get("href")
+        regex = r'\{pattern}(\d+)'.format(pattern=pattern)
+        result = re.match(regex, href)
+        if not result and result.group(1) is None:
+            continue
+        if result[1] not in indexes:
+            indexes.append(result[1])
+    return indexes
+
 
 
 def Scrapper(entityType, entityName, season):
 
-    print(entityType)
-    if (entityType is EntityType.SEASON):
-        print('oi')
-
-    # step 1: definicao do "o que" para scrapar
-    # step 1.1: definir o tipo (seriado, filme, etc)
-    # step 1.2: nome da entidade, season (se tiver)
+    # step 1: definicao do "o que" para scrapar (entityType)
+    # step 1.1: definir o tipo (seriado, filme, etc) (entityType)
+    # step 1.2: nome da entidade, season (se tiver) (entityName, entitySeason)
 
     # step 2: achar o indice (link direto para o conteudo)
+    if (entityType is EntityType.SEASON):
+        indexes = ScrapSeasonIndexes(entityName, season)
 
-    # step 3: para cada indice scrapar o link do spotify
+    # step 3: para cada indice scrapar o(s) link(s) do spotify
+    # step 3.1: chegar em um link parecido com isso: https://tunefind.com/forward/song/{index_musica}?store=spotify&referrer={idzao}&x={idzinho}&y={id}
+    # step 3.1.1: descobrir o que eh cada id
+    # step 3.1.2: referrer (talvez nao precisa desse):
+    # step 3.1.3: x ??? (obrigatorio)
+    # step 3.1.4: y ??? (obrigatorio)
+    for index in indexes:
+
 
     # step 4: montar o request de redirect para obter a musica no open.spotify.com
 
