@@ -48,7 +48,7 @@ def InteractiveMenuSeason():
     try:
         season = int(inputSeason)
     except ValueError:
-        print('oo digita um numero ai vei')
+        print('NO NO NO')
     return season
 
 

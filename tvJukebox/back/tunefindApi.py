@@ -1,20 +1,6 @@
-import requests
+from sanitizer import ParseName
 
 baseURL = 'https://tunefind.com'
-
-def ParseName(name):
-    return name.lower().replace(' ', '-')
-
-def RequestHandler(url):
-    result = requests.get(url)
-
-    if (result.status_code > 400):
-        return None
-    else:
-       return result.content 
-
-def RedirectSpotifyUrlAssembler():
-    pass
 
 def EntityUrlAssembler(category, entityFriendlyName, **kwargs):
     entityName = ParseName(entityFriendlyName)
