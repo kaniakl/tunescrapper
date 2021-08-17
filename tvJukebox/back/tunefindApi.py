@@ -1,3 +1,4 @@
+import re
 from sanitizer import ParseName
 
 baseURL = 'https://tunefind.com'
@@ -27,3 +28,13 @@ def SeasonEpisQueryUrlPattern(entityFriendlyName, seasonNumber):
 
 def SeasonEpisQueryUrl(entityFriendlyName, seasonNumber):
     return '{baseUrl}'.format(baseUrl=baseURL) +  SeasonEpisQueryUrlPattern(entityFriendlyName, seasonNumber)
+
+def RegexpSeasonURL(urlPattern):
+    return r'\{pattern}(\d+)(.*)'.format(pattern=urlPattern)
+
+RegexpEpiNumber = r'(.*)E(\d+)'
+
+RegexpSpotifyDisabled = re.compile('StoreLinks_spotify.*StoreLinks_disabled__.*')
+
+RegexpSongDiv = re.compile('SongRow_container__.*')
+

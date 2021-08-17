@@ -1,3 +1,4 @@
 beautifulsoup4
 requests
 flask
+html5lib
