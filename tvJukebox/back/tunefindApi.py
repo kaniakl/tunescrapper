@@ -36,5 +36,9 @@ RegexpEpiNumber = r'(.*)E(\d+)'
 
 RegexpSpotifyDisabled = re.compile('StoreLinks_spotify.*StoreLinks_disabled__.*')
 
-RegexpSongDiv = re.compile('SongRow_container__.*')
+RegexpSongContainer = re.compile('SongRow_container__.*')
+
+RegexpSongTitle = re.compile('SongTitle_link__')
+
+RegexpSongArtist = re.compile('/artist/')
 

@@ -1,7 +1,8 @@
 import re
 from bs4 import BeautifulSoup
 from httpFuncs import RequestHandler
-from tunefindApi import SeasonEpisQueryUrl, SeasonEpisQueryUrlPattern, RegexpSeasonURL, RegexpEpiNumber, RegexpSpotifyDisabled, RegexpSongDiv
+from tunefindApi import (SeasonEpisQueryUrl, SeasonEpisQueryUrlPattern, RegexpSeasonURL, RegexpEpiNumber,
+RegexpSpotifyDisabled, RegexpSongContainer, RegexpSongTitle, RegexpSongArtist)
 from enum import Enum
 from spotify import MusicObj
 
@@ -36,7 +37,7 @@ def ScrapSeasonIndexes(seriesName, season):
     soup = BeautifulSoup(content, features="html5lib")
     pattern = pattern + '/'
     indexes = []
-    for link in soup.find_all('a', {'href': re.compile(pattern)}):
+    for link in soup.find_all('a', { 'href': re.compile(pattern) }):
         href = link.get("href")
         regexp = RegexpSeasonURL(pattern)
         regexpResult = re.match(regexp, href)
@@ -57,23 +58,38 @@ def ScrapSeasonIndexes(seriesName, season):
 # expects: [(epiNumber, hrefToEpi), (epiNumber, hrefToEpi), [...]]
 # returns: [(epiNumber, [MusicObj, MusicObj, MusicObj, [...] ]), [...]]
 def ScrapeForMusic(epiNumberIndexList):
+    ret = []
 
     # ### Music scrapping
-    # step 1: filter which tracks are available on spotify
-    # step 2: get relevant info to query for them (MusicObj)!
 
+    # step 1: filter which tracks are available on spotify
     for EpiNumAndHref in epiNumberIndexList:
         # trottle this (?)
+        musicObjs = []
         content = RequestHandler(EpiNumAndHref[1])
-        soup = BeautifulSoup(content, features="html5lib")
-        musicContainers = soup.find_all('div', { 'class': RegexpSongDiv })
-        print(len(musicContainers))
+        soup = BeautifulSoup(content, features='html5lib')
+        musicContainers = soup.find_all('div', { 'class': RegexpSongContainer })
         musicContainers = [
             m for m in musicContainers 
             if m.find('span', { 'class': RegexpSpotifyDisabled }) is None
         ]
-        print(len(musicContainers))
 
+        # step 2: get relevant info to query for them (MusicObj)!
+        for musicContainer in musicContainers:
+            # sanitize (?)
+            artist = None
+            songName = None
+            tryFindArtist = musicContainer.find('a', { 'href': RegexpSongArtist })
+            tryFindSongName = musicContainer.find('a', { 'class': RegexpSongTitle })
+            if tryFindArtist is not None:
+                artist = tryFindArtist.contents[0]
+            if tryFindSongName is not None:
+                songName = tryFindSongName.get('title')
+            musicObjs.append(MusicObj(songName, artist))
+        
+        ret.append((EpiNumAndHref[0], musicObjs))
+
+    return ret
 
 def Scrapper(entityType, entityName, season, episode):
 
@@ -99,7 +115,8 @@ def Scrapper(entityType, entityName, season, episode):
     # step 3: with the link(s) to the page(s) in hands, obtain music info !
 
     # step 3.1: get a list with all music in the html(s)
-    ScrapeForMusic(epiNumbersAndIndexes)
+    tracks = ScrapeForMusic(epiNumbersAndIndexes)
+    print(tracks)
     # step 3.1.1: find and filter by which ones are available on spotify (search for the icon)
     # step 3.1.2: get relevant info that helps to pinpoint the search later on (artist, album, etc)
     # step 3.1.3: sanitize info (is it required? in which scenarios its required?) 
