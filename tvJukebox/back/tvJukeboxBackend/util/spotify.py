@@ -3,26 +3,29 @@ version = '/v1/'
 authUrl = 'https://accounts.spotify.com'
 
 class MusicObj:
+    href = None
+
     def __init__(self, trackName, artist, album=None, year=None):
         self.trackName = trackName
         self.artist = artist
         self.album = album
         self.year = year # ?
+        self.href
 
     def __str__(self):
         printable = 'TRK: {track}; ATS: {artist};'.format(track=self.trackName, artist=self.artist)
         if self.album is not None:
-            printable = printable + ' ALB: {album};'.format(album=album)
+            printable = printable + ' ALB: {album};'.format(album=self.album)
         if self.year is not None:
-            printable = printable + ' Y: {year};'.format(year=year)
+            printable = printable + ' Y: {year};'.format(year=self.year)
         return printable
 
     def __repr__(self):
         printable = 'TRK: {track}; ATS: {artist};'.format(track=self.trackName, artist=self.artist)
         if self.album is not None:
-            printable = printable + ' ALB: {album};'.format(album=album)
+            printable = printable + ' ALB: {album};'.format(album=self.album)
         if self.year is not None:
-            printable = printable + ' Y: {year};'.format(year=year)
+            printable = printable + ' Y: {year};'.format(year=self.year)
         return printable
 
 def SpotifyBaseUrlAssembler(resource, params=[], offset=None, limit=None):

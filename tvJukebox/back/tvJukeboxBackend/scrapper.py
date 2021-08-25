@@ -31,6 +31,12 @@ def ConvertToEnumEntityType(typeName):
 
 # returns [(epiNumber, hrefToEpi), (epiNumber, hrefToEpi), [...]]
 def ScrapSeasonIndexes(seriesName, season):
+    """Obtain a List of Url indexes of the series
+
+    Keyword arguments:
+    seriesName -- name of the show
+    season -- season number
+    """
     url = SeasonEpisQueryUrl(seriesName, season)
     pattern = SeasonEpisQueryUrlPattern(seriesName, season)
     content = RequestHandler(HttpVerbs.GET, url)
@@ -58,6 +64,11 @@ def ScrapSeasonIndexes(seriesName, season):
 # expects: [(epiNumber, hrefToEpi), (epiNumber, hrefToEpi), [...]]
 # returns: [(epiNumber, [MusicObj, MusicObj, MusicObj, [...] ]), [...]]
 def ScrapeForMusic(epiNumberIndexList):
+    """for each href in the list, scrap the webpage for track info.
+
+    Keyword arguments:
+    epiNumberIndexList -- List with epi number and href to it e.g. [(epiNumber, hrefToEpi), (epiNumber, hrefToEpi), [...]]
+    """
     ret = []
 
     # ### Music scrapping
@@ -92,6 +103,14 @@ def ScrapeForMusic(epiNumberIndexList):
     return ret
 
 def Scrapper(entityType, entityName, season, episode):
+    """main function to get content. Should return a spotify playlist
+
+    Keyword arguments:
+    entityType -- type of the content
+    entityName -- name of the content
+    season -- season number, if any
+    episode -- episode number for more specificity, if any
+    """
 
     # ### WebPage scrapping
     # step 1: definition of "what" to scrap (entityType)

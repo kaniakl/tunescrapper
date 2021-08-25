@@ -9,6 +9,14 @@ class HttpVerbs(Enum):
     OPTIONS = 'OPTIONS'
     PATCH = 'PATCH'
 
+def headerBearerToken(token):
+    return { 'Authentication': 'bearer {t}'.format(t=token) }
+
+def CreateSession(headers):
+    session = requests.Session()
+    session.headers.update(headers)
+    return session
+
 def RequestHandler(verb, assembledUrl, session=None, body=None):
     if verb == HttpVerbs.GET:
         return Get(assembledUrl, session)

@@ -4,6 +4,14 @@ from tvJukeboxBackend.util.sanitizer import ParseName
 baseURL = 'https://tunefind.com'
 
 def EntityUrlAssembler(category, entityFriendlyName, **kwargs):
+    """form a url to the website to be called and scrapped from.
+
+    Keyword arguments:
+    category -- type of content
+    entityFriendlyName -- name of the content
+    kwargs['seasonIndex'] -- url index of the season if its a show
+    kwargs['seasonNumber'] -- number of the season if its a show
+    """
     entityName = ParseName(entityFriendlyName)
     seasonIndex = kwargs.get('seasonIndex', None)
     seasonNumber = kwargs.get('seasonNumber', None)
