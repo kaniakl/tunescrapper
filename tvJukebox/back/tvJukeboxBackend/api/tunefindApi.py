@@ -1,5 +1,5 @@
 import re
-from sanitizer import ParseName
+from tvJukeboxBackend.util.sanitizer import ParseName
 
 baseURL = 'https://tunefind.com'
 

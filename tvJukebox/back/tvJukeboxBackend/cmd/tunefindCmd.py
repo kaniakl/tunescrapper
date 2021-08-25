@@ -1,5 +1,5 @@
 import argparse
-from scrapper import Scrapper, EntityType, ScrapperParams, ConvertToEnumEntityType
+from tvJukeboxBackend.scrapper import Scrapper, EntityType, ScrapperParams, ConvertToEnumEntityType
 
 
 def InteractiveMenuHeader():

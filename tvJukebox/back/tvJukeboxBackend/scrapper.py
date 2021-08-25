@@ -1,10 +1,10 @@
 import re
 from bs4 import BeautifulSoup
-from httpFuncs import RequestHandler
-from tunefindApi import (SeasonEpisQueryUrl, SeasonEpisQueryUrlPattern, RegexpSeasonURL, RegexpEpiNumber,
-RegexpSpotifyDisabled, RegexpSongContainer, RegexpSongTitle, RegexpSongArtist)
 from enum import Enum
-from spotify import MusicObj
+from .util.http import Get, RequestHandler, HttpVerbs
+from .api.tunefindApi import (SeasonEpisQueryUrl, SeasonEpisQueryUrlPattern, RegexpSeasonURL, RegexpEpiNumber,
+RegexpSpotifyDisabled, RegexpSongContainer, RegexpSongTitle, RegexpSongArtist)
+from .util.spotify import MusicObj
 
 class EntityType(Enum):
     UNKNOWN = -1
@@ -33,7 +33,7 @@ def ConvertToEnumEntityType(typeName):
 def ScrapSeasonIndexes(seriesName, season):
     url = SeasonEpisQueryUrl(seriesName, season)
     pattern = SeasonEpisQueryUrlPattern(seriesName, season)
-    content = RequestHandler(url)
+    content = RequestHandler(HttpVerbs.GET, url)
     soup = BeautifulSoup(content, features="html5lib")
     pattern = pattern + '/'
     indexes = []
@@ -66,7 +66,7 @@ def ScrapeForMusic(epiNumberIndexList):
     for EpiNumAndHref in epiNumberIndexList:
         # trottle this (?)
         musicObjs = []
-        content = RequestHandler(EpiNumAndHref[1])
+        content = RequestHandler(HttpVerbs.GET, EpiNumAndHref[1])
         soup = BeautifulSoup(content, features='html5lib')
         musicContainers = soup.find_all('div', { 'class': RegexpSongContainer })
         musicContainers = [
@@ -115,11 +115,10 @@ def Scrapper(entityType, entityName, season, episode):
     # step 3: with the link(s) to the page(s) in hands, obtain music info !
 
     # step 3.1: get a list with all music in the html(s)
-    tracks = ScrapeForMusic(epiNumbersAndIndexes)
-    print(tracks)
     # step 3.1.1: find and filter by which ones are available on spotify (search for the icon)
     # step 3.1.2: get relevant info that helps to pinpoint the search later on (artist, album, etc)
     # step 3.1.3: sanitize info (is it required? in which scenarios its required?) 
+    tracks = ScrapeForMusic(epiNumbersAndIndexes)
 
     # ### spotify
     # step 4 multiverse 1: GET da music ! (obs1: we are searching for links here) (obs2: try not to span spotify)
@@ -131,15 +130,3 @@ def Scrapper(entityType, entityName, season, episode):
     # step 4 multiverse 2: try to directly create the playlist with the -sanitized- info from step 3
     # step 4.1 multiverse 2: see if needs authentication, and if it does ask here. SAVE THE AUTH ON THE APP TO NOT SPAM THE USER WITH ANNOYANCE !
     # step 4.2 multiverse 2 (optional ending): "print" information regarding the music to be saved.
-
-category = EntityType.SEASON
-entityTimeIndex = 'season'
-entityTimeIndexValue = 5
-entityIndex = 6
-entityFriendlyName = 'Sons of Anarchy'
-
-def TestScrapper():
-    Scrapper(category, entityFriendlyName, entityTimeIndexValue, entityIndex)
-
-if __name__ == "__main__":
-    TestScrapper()
