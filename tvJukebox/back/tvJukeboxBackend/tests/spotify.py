@@ -1,5 +1,6 @@
 from tvJukeboxBackend.api.spotifyApi import ConvertToSpotifyMusic
 from tvJukeboxBackend.util.spotify import MusicObj
+from tvJukeboxBackend.util.http import CreateSession, HeaderBearerToken
 
 def TestConvertToSpotifyMusic():
     mock = [
@@ -16,6 +17,9 @@ def TestConvertToSpotifyMusic():
         MusicObj(r'Cold Blues',
                 r'Quaker City Night Hawks'),
     ]
+
+    token = ''
+    spotifyApi = CreateSession(HeaderBearerToken(token))
 
     res = ConvertToSpotifyMusic(mock)
     print(res)
