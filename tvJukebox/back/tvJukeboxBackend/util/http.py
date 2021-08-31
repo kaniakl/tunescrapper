@@ -1,4 +1,5 @@
 import requests
+import json
 from enum import Enum
 
 class HttpVerbs(Enum):
@@ -9,15 +10,15 @@ class HttpVerbs(Enum):
     OPTIONS = 'OPTIONS'
     PATCH = 'PATCH'
 
-def headerBearerToken(token):
+def HeaderBearerToken(token: str):
     return { 'Authentication': 'bearer {t}'.format(t=token) }
 
-def CreateSession(headers):
+def CreateSession(headers: dict[str, str]):
     session = requests.Session()
-    session.headers.update(headers)
+    session.headers.update(headers)        
     return session
 
-def RequestHandler(verb, assembledUrl, session=None, body=None):
+def RequestHandler(verb: HttpVerbs, assembledUrl: str, session: requests.Session=None, body: str=None):
     if verb == HttpVerbs.GET:
         return Get(assembledUrl, session)
     elif verb == HttpVerbs.POST:
@@ -31,7 +32,7 @@ def RequestHandler(verb, assembledUrl, session=None, body=None):
     elif verb == HttpVerbs.PATCH:
         return Patch(assembledUrl, session)
     
-def ResponseHandler(response):
+def ResponseHandler(response: requests.Response):
     if (response.status_code > 400):
         return None
     else:
@@ -44,37 +45,37 @@ def ResponseWrapper(httpFunc):
     return wrapper
 
 @ResponseWrapper
-def Get(url, session=None):
+def Get(url: str, session: requests.Session=None):
     if session is not None:
         return session.get(url)
     return requests.get(url)
 
 @ResponseWrapper
-def Post(url, data, session=None):
+def Post(url: str, data, session: requests.Session=None):
     if session is not None:
         return session.post(url)
     return requests.post(url, data)
 
 @ResponseWrapper
-def Put(url, data, session=None):
+def Put(url: str, data, session: requests.Session=None):
     if session is not None:
         return session.put(url)
     return requests.put(url, data)
 
 @ResponseWrapper
-def Delete(url, session=None):
+def Delete(url: str, session: requests.Session=None):
     if session is not None:
         return session.delete(url)
     return requests.delete(url)
 
 @ResponseWrapper
-def Options(url, session=None):
+def Options(url: str, session: requests.Session=None):
     if session is not None:
         return session.options(url)
     return requests.options(url)
 
 @ResponseWrapper
-def Patch(url, session=None):
+def Patch(url: str, session: requests.Session=None):
     if session is not None:
         return session.patch(url)
     return requests.patch(url)

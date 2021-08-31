@@ -18,7 +18,7 @@ class ScrapperParams:
         self.name = name
         self.season = season
 
-def ConvertToEnumEntityType(typeName):
+def ConvertToEnumEntityType(typeName: str):
     switch = typeName.lower()
     if 's' in switch:
         return EntityType.SEASON
@@ -30,7 +30,7 @@ def ConvertToEnumEntityType(typeName):
         return EntityType.UNKNOWN
 
 # returns [(epiNumber, hrefToEpi), (epiNumber, hrefToEpi), [...]]
-def ScrapSeasonIndexes(seriesName, season):
+def ScrapSeasonIndexes(seriesName: str, season: str):
     """Obtain a List of Url indexes of the series
 
     Keyword arguments:
@@ -63,7 +63,7 @@ def ScrapSeasonIndexes(seriesName, season):
 
 # expects: [(epiNumber, hrefToEpi), (epiNumber, hrefToEpi), [...]]
 # returns: [(epiNumber, [MusicObj, MusicObj, MusicObj, [...] ]), [...]]
-def ScrapeForMusic(epiNumberIndexList):
+def ScrapeForMusic(epiNumberIndexList: list(tuple(int, list(MusicObj)))):
     """for each href in the list, scrap the webpage for track info.
 
     Keyword arguments:
@@ -102,7 +102,7 @@ def ScrapeForMusic(epiNumberIndexList):
 
     return ret
 
-def Scrapper(entityType, entityName, season, episode):
+def Scrapper(entityType: EntityType, entityName: str, season: int, episode: int):
     """main function to get content. Should return a spotify playlist
 
     Keyword arguments:
@@ -119,11 +119,11 @@ def Scrapper(entityType, entityName, season, episode):
 
     # step 2: find the index (direct link to the web page to be scrapped for content)
     epiNumbersAndIndexes = []
-    if entityType is EntityType.SEASON:
+    if entityType == EntityType.SEASON:
         epiNumbersAndIndexes = ScrapSeasonIndexes(entityName, season)
-    elif entityType is EntityType.GAME:
+    elif entityType == EntityType.GAME:
         pass
-    elif entityType is EntityType.MOVIE:
+    elif entityType == EntityType.MOVIE:
         pass
 
     # step 2.1: match the epi number with the index to allow querying by episode number

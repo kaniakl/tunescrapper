@@ -3,7 +3,7 @@ from tvJukeboxBackend.util.sanitizer import ParseName
 
 baseURL = 'https://tunefind.com'
 
-def EntityUrlAssembler(category, entityFriendlyName, **kwargs):
+def EntityUrlAssembler(category: str, entityFriendlyName: str, **kwargs):
     """form a url to the website to be called and scrapped from.
 
     Keyword arguments:
@@ -24,20 +24,20 @@ def EntityUrlAssembler(category, entityFriendlyName, **kwargs):
             seasonNumber=seasonNumber,
             index=seasonIndex)
 
-def SeasonsQueryUrlPattern(entityFriendlyName):
+def SeasonsQueryUrlPattern(entityFriendlyName: str):
     entityName = ParseName(entityFriendlyName)
     return '/show/{name}'.format(name=entityName)
 
-def SeasonsQueryUrl(entityName):
+def SeasonsQueryUrl(entityName: str):
     return '{baseUrl}'.format(baseUrl=baseURL) + SeasonsQueryUrlPattern(entityName)
 
-def SeasonEpisQueryUrlPattern(entityFriendlyName, seasonNumber):
+def SeasonEpisQueryUrlPattern(entityFriendlyName: str, seasonNumber: str):
     return SeasonsQueryUrlPattern(entityFriendlyName) + '/season-{index}'.format(index=seasonNumber)
 
-def SeasonEpisQueryUrl(entityFriendlyName, seasonNumber):
+def SeasonEpisQueryUrl(entityFriendlyName: str, seasonNumber: str):
     return '{baseUrl}'.format(baseUrl=baseURL) +  SeasonEpisQueryUrlPattern(entityFriendlyName, seasonNumber)
 
-def RegexpSeasonURL(urlPattern):
+def RegexpSeasonURL(urlPattern: str):
     return r'\{pattern}(\d+)(.*)'.format(pattern=urlPattern)
 
 RegexpEpiNumber = r'(.*)E(\d+)'
