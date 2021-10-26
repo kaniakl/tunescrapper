@@ -1,0 +1,17 @@
+export const EnumLayoutBreakpoint = {
+    Iphone: 320,
+    Mobile: 375,
+    Tablet: 640,
+    Laptop: 1024,
+    Deaktop: 1280,
+    Xs: 0,
+    Sm: 600,
+    Md: 960,
+    Lg: 1280,
+    Xl: 1920,
+    ExtraSmall: 0,
+    Small: 600,
+    Medium: 960,
+    Large: 1280,
+    ExtraLarge: 1920,
+};
