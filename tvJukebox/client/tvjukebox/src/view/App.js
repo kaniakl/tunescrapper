@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Layout } from '@/view/Layout';
 import { Home } from '@/view/Home';
 import { Route, Switch } from 'react-router';
-import { LocaleWrapper } from '@/components';
+import { LocaleWrapper, BreakpointWrapper } from '@/components';
 
 function App() {
     return (
@@ -10,9 +10,11 @@ function App() {
             <div className="App">
                 <Switch>
                     <LocaleWrapper>
-                        <Layout>
-                            <Route exact path="/" component={Home}/>
-                        </Layout>
+                        <BreakpointWrapper>
+                            <Layout>
+                                <Route exact path="/" component={Home}/>
+                            </Layout>
+                        </BreakpointWrapper>
                     </LocaleWrapper>
                 </Switch>
             </div>

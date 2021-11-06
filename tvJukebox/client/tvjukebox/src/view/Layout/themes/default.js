@@ -1,4 +1,5 @@
 import { EnumLayoutBreakpoint } from '@/model';
+import { green, lightBlue } from '@mui/material/colors';
 
 export const defaultThemeConfigs = {
     breakpoints: {
@@ -10,5 +11,13 @@ export const defaultThemeConfigs = {
         tablet: EnumLayoutBreakpoint.Tablet,
         laptop: EnumLayoutBreakpoint.Laptop,
         desktop: EnumLayoutBreakpoint.Desktop,
+    },
+    palette: {
+        primary: {
+            main: green[700],
+        },
+        secondary: {
+            main: lightBlue[500],
+        },
     },
 };

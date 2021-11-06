@@ -12,13 +12,30 @@ export function SeriesEntity({ searchTerm }) {
     const theme = useTheme();
     const [activeStep, setActiveStep] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [enableNext, setEnableNext] = useState(false);
+    const [enableNextP1, setEnableNextP1] = useState(false);
+    const [enableNextP2, setEnableNextP2] = useState(false);
+    const [enableNextP3, setEnableNextP3] = useState(false);
     const [seasonsSelected, setSeasonsSelected] = useState([]);
     const [seasonsAndEpisSelected, setSeasonsAndEpisSelected] = useState([]);
 
+    const phaseSetters = {
+        0: (state) => {
+            setEnableNextP1(state);
+        },
+        1: (state) => {
+            setEnableNextP2(state);
+        },
+        2: (state) => {
+            setEnableNextP3(state);
+        },
+    };
+
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setEnableNext(false);
+        const next = activeStep + 1;
+        setActiveStep(next);
+        if (phaseSetters[next]) {
+            phaseSetters[next](false);
+        }
     };
 
     const handleBack = () => {
@@ -34,21 +51,39 @@ export function SeriesEntity({ searchTerm }) {
     };
 
     const toggleNextSeasons = (isOver, values) => {
-        setEnableNext(isOver);
+        if (isOver !== enableNextP1) {
+            setEnableNextP1(isOver);
+        }
         if (isOver) {
             setSeasonsSelected(values);
         }
     };
 
     const toggleNextEpisodes = (isOver, values) => {
-        setEnableNext(isOver);
+        if (isOver !== enableNextP2) {
+            setEnableNextP2(isOver);
+        }
         if (isOver) {
             setSeasonsAndEpisSelected(values);
         }
     };
 
     const toggleNextConfirmation = (isOver) => {
-        setEnableNext(isOver);
+        if (isOver !== enableNextP3) {
+            setEnableNextP3(isOver);
+        }
+    };
+
+    const isDisabled = () => {
+        if (activeStep === 0) {
+            return !enableNextP1;
+        }
+        if (activeStep === 1) {
+            return !enableNextP2;
+        }
+        if (activeStep === 2) {
+            return !enableNextP3;
+        }
     };
 
     return (
@@ -61,7 +96,7 @@ export function SeriesEntity({ searchTerm }) {
                     activeStep={activeStep}
                     sx={{ maxWidth: '100%', flexGrow: 1 }}
                     nextButton={
-                        <Button size="small" onClick={handleNext} disabled={!enableNext}>
+                        <Button size="small" onClick={handleNext} disabled={isDisabled()}>
                             {activeStep === 2 ? 'Finish' : activeStep === 3 ? null : 'Next'}
                             {theme.direction === 'rtl' ? (
                                 <KeyboardArrowLeft />

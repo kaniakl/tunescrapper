@@ -1,4 +1,4 @@
 
-export isEmpty(arr) {
-    return !arr ||  !(arr instanceof Array) || !arr.length > 0
-}
+export function isEmpty(arr) {
+    return !arr || !(arr instanceof Array) || !arr.length > 0;
+};

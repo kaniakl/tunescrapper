@@ -9,6 +9,7 @@ import '@/static/css/index.css';
 
 export function Layout({ children }) {
     const [isDark, setIsDark] = useState(false);
+    console.log('\n#############lightTheme: ', lightTheme.palette.primary);
 
     return (
         <ThemeProvider theme={isDark ? darkTheme : lightTheme}>

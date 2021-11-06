@@ -29,7 +29,7 @@ module.exports = {
         'object-curly-spacing': ['error', 'always'],
         'no-unused-vars': 'warn',
         'react/prop-types': 'warn',
-        'max-len': ['error', { 'code': 120 }],
+        'max-len': ['error', { 'code': 160 }],
         'operator-linebreak': ['error', 'before'],
         'quotes': ['error', 'single', { 'avoidEscape': true }],
     },

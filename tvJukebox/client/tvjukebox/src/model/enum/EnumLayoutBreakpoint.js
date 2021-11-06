@@ -3,7 +3,7 @@ export const EnumLayoutBreakpoint = {
     Mobile: 375,
     Tablet: 640,
     Laptop: 1024,
-    Deaktop: 1280,
+    Desktop: 1280,
     Xs: 0,
     Sm: 600,
     Md: 960,
@@ -13,5 +13,6 @@ export const EnumLayoutBreakpoint = {
     Small: 600,
     Medium: 960,
     Large: 1280,
+    MediumLarge: 1440,
     ExtraLarge: 1920,
 };

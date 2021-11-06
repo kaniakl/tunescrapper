@@ -3,9 +3,8 @@ import { defaultThemeConfigs } from './default';
 
 const theme = {
     ...defaultThemeConfigs,
-    pallete: {
-        type: 'dark',
-    },
 };
+
+theme.palette.type = 'dark';
 
 export const darkTheme = createMuiTheme({ theme });
